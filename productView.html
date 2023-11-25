@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <hr />
+    <div id="main">
+        <div id="productList" v-if="UI=='main'">
+            <h1>商品瀏覽</h1>
+            <button @click="goToCart">前往購物車</button>
+            <table border=1>
+                <tr>
+                    <td>序號</td>
+                    <td>商品名稱</td>
+                    <td>價錢</td>
+                    <td>詳情</td>
+                    <td>加入購物車</td>
+                </tr>
+                <tr v-for="product in products">
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.productName }}</td>
+                    <td>{{ product.productCost }}</td>
+                    <td>{{ product.productContent }}</td>
+                    <td><button @click="addToCart(product)">加入購物車</button></td>
+                </tr>
+            </table>
+        </div>
+        <div v-if="UI=='editForm'">
+            <!-- 在這裡放入商品的表單 -->
+        </div>
+    </div>
+    <script>
+        const productApp = Vue.createApp({
+            data() {
+                return {
+                    UI: 'main',
+                    products: [], // 商品列表
+                    cart: [], // 購物車中的商品列表
+                }
+            },
+            methods: {
+                // 透過 AJAX 請求從後端獲取商品列表
+                loadProducts() {
+                    fetch('productControl.php?act=listProduct') // 假設您的後端有相應的路由處理
+                    .then(response => response.json())
+                    .then(data => {
+                        this.products = data;
+                    })
+                    .catch(error => console.error('Error:', error));
+            },
+                // 將商品添加到購物車
+                addToCart(product) {
+                    const existingProductIndex = this.cart.findIndex(p => p.id === product.id);
+
+                    if (existingProductIndex !== -1) {
+                        // 商品已存在於購物車中，增加數量
+                        this.cart[existingProductIndex].quantity++;
+                    } else {
+                        // 商品不存在於購物車中，添加新商品
+                        this.cart.push({
+                            id: product.id,
+                            productName: product.productName,
+                            productCost: product.productCost,
+                            productContent: product.productContent,
+                            quantity: 1,
+                        });
+                    }
+                },
+            },
+            created() {
+                // 初始化資料，例如加載商品列表
+                this.loadProducts();
+            }
+        }).mount("#main");
+    </script>
+</body>
+
+</html>
