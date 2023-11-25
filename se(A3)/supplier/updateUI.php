@@ -10,10 +10,10 @@ $jsonData = json_decode(file_get_contents('php://input'), true);
 </head>
 <body>
     <form id="myForm" name="myForm" method="post">
-        商品名稱: <input name="itemName" type="text" value="<?php echo $jsonData['itemName'];?>" ><br>
-        商品價格: <input name="itemPrice" type="number" value="<?php echo $jsonData['itemPrice']; ?>" ><br>
-        商品資訊: <input name="itemDescription" type="text" value="<?php echo $jsonData['itemDescription']; ?>" ><br>
-        商品數量: <input name="itemNum" type="number" value="<?php echo $jsonData['itemNum']; ?>" >
+        商品名稱: <input name="productName" type="text" value="<?php echo $jsonData['productName'];?>" ><br>
+        商品價格: <input name="productCost" type="number" value="<?php echo $jsonData['productCost']; ?>" ><br>
+        商品資訊: <input name="productContent" type="text" value="<?php echo $jsonData['productContent']; ?>" ><br>
+        商品數量: <input name="productNumber" type="number" value="<?php echo $jsonData['productNumber']; ?>" >
         <br>
         <input type="button" onclick="updateItem(<?php echo $jsonData['id']; ?>)" value="修改">
     </form>
