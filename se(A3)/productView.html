@@ -59,15 +59,14 @@
 
                     if (existingProductIndex !== -1) {
                         // 商品已存在於購物車中，增加數量
-                        this.cart[existingProductIndex].quantity++;
+                        this.cart[existingProductIndex].myAmount++;
                     } else {
                         // 商品不存在於購物車中，添加新商品
                         this.cart.push({
                             id: product.id,
                             productName: product.productName,
                             productCost: product.productCost,
-                            productContent: product.productContent,
-                            quantity: 1,
+                            myAmount: 1,
                         });
                     }
                 },
