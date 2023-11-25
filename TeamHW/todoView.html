@@ -1,0 +1,73 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript">
+function loadCart() {
+	URL = 'todoControl.php?act=listCart';
+	fetch(URL,{
+        method: 'POST'
+	})
+	.then(function(res){
+		return res.json();
+	})
+	.then(function(data){
+	    let div = document.getElementById('main');
+		result="<table border=1>";
+		result += '<tr><th>id</th><th>itemName</th><th>Price</th><th>現在購買數量</th><th>修改數量</th></tr>'
+		for (let r of data){
+			result += "<tr>";
+			let id=r['id'];
+			for (let key in r){
+				if (key == 'myAmount'){
+					result += '<td>'+r[key]+'</td>';
+					result += `<td><input id="myNum${id}" type="number" name="amount" value="`+ r[key] +'"></td>';
+				} else {
+				    result += '<td>'+r[key]+'</td>';
+				}
+				
+			}
+            result += "<td><button onclick='delCartItem(" + id + ")'>刪</button></td>";
+			result += "<td><button onclick='updateCart(" + id + ")'>修改</button></td>";
+			result += '</tr>';
+		}
+		result += '</table>';
+		div.innerHTML=result;
+	})
+}
+function updateCart(id){ //拿到id及要修改的數量，此數量必須1<X<商品剩餘數量，丟給controler
+	var inputElement = document.getElementById('myNum'+id);
+    
+    // 获取input元素的值
+    var inputValue = inputElement.value;
+	let url="todoControl.php?act=updateCart&id="+id+"&amount="+ inputValue;
+	fetch(url,{
+		method: 'POST'
+	})
+	.then(function(res){return res.text(); }) //取得傳回值，轉為文字
+	.then(function(data){ 
+		loadCart();
+	})
+}
+
+function delCartItem(id){
+	let url="todoControl.php?act=delCartItem&id="+id;
+	fetch(url,{
+		method: 'POST'
+	})
+	.then(function(res){return res.text(); }) //取得傳回值，轉為文字
+	.then(function(data){ 
+		loadCart();
+	})
+}
+
+
+
+</script>
+</head>
+
+<body >
+<button onClick="loadCart()">查看購物車</button>
+<hr />
+<div id="main"><h1>This is the main page.</h1></div>
+
+
+</body></html>
