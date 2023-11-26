@@ -55,21 +55,26 @@
             },
                 // 將商品添加到購物車
                 addToCart(product) {
-                    const existingProductIndex = this.cart.findIndex(p => p.id === product.id);
+                    const data = {
+                        productName: product.productName,
+                        productCost: product.productCost,
+                        productId: product.id,
+                    };
 
-                    if (existingProductIndex !== -1) {
-                        // 商品已存在於購物車中，增加數量
-                        this.cart[existingProductIndex].myAmount++;
-                    } else {
-                        // 商品不存在於購物車中，添加新商品
-                        this.cart.push({
-                            id: product.id,
-                            productName: product.productName,
-                            productCost: product.productCost,
-                            myAmount: 1,
-                        });
-                    }
-                },
+                    fetch('productControl.php?act=addToCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ dat: data }), 
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 此處可以處理伺服器回傳的任何數據或執行其他操作
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
             },
             created() {
                 // 初始化資料，例如加載商品列表
