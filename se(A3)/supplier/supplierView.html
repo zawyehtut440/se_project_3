@@ -57,24 +57,23 @@
                 return response.json();
             })
             .then(function(data) {
-                loadUpdateItemUI('updateUI.php', data);
+                let form = loadUpdateFormUI(data)
+                let div = document.getElementById('main');
+                div.innerHTML = form;
             })
         }
 
-        function loadUpdateItemUI(url, data) {
-            jsonData = JSON.stringify(data);
-            fetch(url, {
-                method: 'POST',
-                body: jsonData,
-            })
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(data) {
-                let div = document.getElementById('main');
-                div.innerHTML = data;
-            })
-        }
+        function loadUpdateFormUI(data) {
+            let result = '<form id="myForm" name="myForm" method="post">';
+            result += '商品名稱: <input name="productName" type="text" value="' + data['productName'] + '" ><br>';
+            result += '商品價格: <input name="productCost" type="number" value="' + data['productCost'] + '" ><br>';
+            result += '商品資訊: <input name="productContent" type="text" value="' + data['productContent'] + '" ><br>';
+            result += '商品數量: <input name="productNumber" type="number" value="' + data['productNumber'] + '"><br>';
+            result += '<input type="button" onclick="updateItem('+ data['id'] + ')" value="修改">';
+            result += '</form>';
+            return result;
+        };
+
 
         function addItem() {
             let form = document.getElementById('myForm');

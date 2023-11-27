@@ -12,7 +12,7 @@ function loadCart() {
 	.then(function(data){
 	    let div = document.getElementById('main');
 		result="<table border=1>";
-		result += '<tr><th>id</th><th>itemName</th><th>Price</th><th>現在購買數量</th><th>修改數量</th></tr>'
+		result += '<tr><th>id</th><th>itemName</th><th>Price</th><th>現在購買數量</th><th>修改數量</th><th>總價</th></tr>'
 		for (let r of data){
 			result += "<tr>";
 			let id=r['id'];
@@ -25,6 +25,8 @@ function loadCart() {
 				}
 				
 			}
+			let totalPrice = Number(r['productPrice']) * Number(r['myAmount']);
+			result += '<td>'+ totalPrice +'</td>'
             result += "<td><button onclick='delCartItem(" + id + ")'>刪</button></td>";
 			result += "<td><button onclick='updateCart(" + id + ")'>修改</button></td>";
 			result += '</tr>';
